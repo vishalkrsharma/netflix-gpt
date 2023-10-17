@@ -2,7 +2,11 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        NETFLIX_BG: "url('./src/assets/Netflix_Bg.jpg')",
+      },
+    },
   },
   plugins: [],
 };
