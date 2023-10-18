@@ -2,11 +2,14 @@ import React from "react";
 
 import Header from "../components/Header";
 import Form from "../components/Form";
+import NETFLIX_BG from "../assets/Netflix_Bg.jpg";
 
 const Login = () => {
   return (
-    <div className="absolute -z-20  min-h-full w-full bg-NETFLIX_BG bg-cover bg-center">
-      <div className="absolute -z-10  min-h-full w-full bg-neutral-950 opacity-60"></div>
+    <div
+      className="-z-20 min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${NETFLIX_BG})` }}
+    >
       <Header />
       <Form />
     </div>

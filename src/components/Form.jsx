@@ -1,6 +1,15 @@
 import React, { useState, useRef } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
-import { checkValidDataSignUp, checkValidDataSignIn } from "../utils/validate";
+import { useDispatch } from "react-redux";
+
+import { checkValidData, checkName } from "../utils/validate";
+import { auth } from "../utils/firebase";
+import { addUser } from "../utils/userSlice";
 
 const Form = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -10,23 +19,64 @@ const Form = () => {
   const email = useRef(null);
   const password = useRef(null);
 
+  const dispatch = useDispatch();
+
   const handleButtonClick = (event) => {
     event.preventDefault();
-    let message;
     if (isSignInForm) {
-      message = checkValidDataSignIn(
-        email.current.value,
-        password.current.value,
+      setErrorMessage(
+        checkValidData(email.current.value, password.current.value),
       );
     } else {
-      message = checkValidDataSignUp(
-        name.current.value,
-        email.current.value,
-        password.current.value,
+      setErrorMessage(
+        checkName(name.current.value) ||
+          checkValidData(email.current.value, password.current.value),
       );
     }
 
-    setErrorMessage(message);
+    if (errorMessage) return;
+
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/32286936?v=4",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName, photoURL }));
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value,
+      )
+        .then((userCredential) => {
+          const { uid, email, displayName, photoURL } = auth.currentUser;
+          dispatch(addUser({ uid, email, displayName, photoURL }));
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
   };
 
   return (
