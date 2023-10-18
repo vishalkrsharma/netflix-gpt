@@ -46,11 +46,10 @@ const Form = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "https://avatars.githubusercontent.com/u/32286936?v=4",
           })
             .then(() => {
-              const { uid, email, displayName, photoURL } = auth.currentUser;
-              dispatch(addUser({ uid, email, displayName, photoURL }));
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName }));
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -68,8 +67,8 @@ const Form = () => {
         password.current.value,
       )
         .then((userCredential) => {
-          const { uid, email, displayName, photoURL } = auth.currentUser;
-          dispatch(addUser({ uid, email, displayName, photoURL }));
+          const { uid, email, displayName } = auth.currentUser;
+          dispatch(addUser({ uid, email, displayName }));
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -80,7 +79,7 @@ const Form = () => {
   };
 
   return (
-    <div className="m-auto mt-20 flex w-[30rem] flex-col gap-6 bg-neutral-950 bg-opacity-60 p-10">
+    <div className="m-auto flex w-[30rem] flex-col gap-6 rounded-md bg-neutral-950 bg-opacity-80 p-10">
       <div className="text-3xl font-medium text-white">
         {isSignInForm ? "Sign In" : "Sign Up"}
       </div>

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 
 import { auth } from "../utils/firebase";
 import NETFLIX_LOGO from "../assets/Netflix_Logo.png";
+import USER_AVATAR from "../assets/User_Avatar.png";
 import { addUser, removeUser } from "../utils/userSlice";
 
 const Header = () => {
@@ -16,8 +17,8 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid, email, displayName, photoURL } = user;
-        dispatch(addUser({ uid, email, displayName, photoURL }));
+        const { uid, email, displayName } = user;
+        dispatch(addUser({ uid, email, displayName }));
         navigate("/browse");
       } else {
         dispatch(removeUser());
@@ -37,17 +38,23 @@ const Header = () => {
   };
 
   return (
-    <div className="flex items-center justify-between bg-gradient-to-b from-neutral-950">
-      <img
-        className="w-56"
-        src={NETFLIX_LOGO}
-        alt="NETFLIX_LOGO"
-        loading="lazy"
-      />
+    <div className="absolute  top-0 z-10 flex min-w-full items-center justify-between bg-gradient-to-b from-neutral-950">
+      <div className="w-56">
+        <img src={NETFLIX_LOGO} alt="NETFLIX_LOGO" loading="lazy" />
+      </div>
       {user && (
-        <div className="mr-5">
-          <img className="h-10" src={user.photoURL} alt="USER_AVATAR" />
-          <button onClick={handleSignOut}>Sign Out</button>
+        <div className="mr-5 flex items-center justify-center gap-5 text-white">
+          <img
+            className="h-10 rounded-md border-2 border-white"
+            src={USER_AVATAR}
+            alt="USER_AVATAR"
+          />
+          <button
+            className="flex items-center justify-center gap-2 rounded-md bg-[#A61B24] px-4 py-2 font-medium"
+            onClick={handleSignOut}
+          >
+            Sign Out
+          </button>
         </div>
       )}
     </div>
