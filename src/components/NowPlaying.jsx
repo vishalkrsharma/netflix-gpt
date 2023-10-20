@@ -11,8 +11,6 @@ const NowPlaying = () => {
 
   const mainMovie = movies[Math.floor(Math.random() * 20)];
 
-  console.log(mainMovie);
-
   return (
     <div className="relative">
       <Movie id={mainMovie.id} />

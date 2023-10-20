@@ -6,7 +6,7 @@ const MovieInfo = ({ movie }) => {
 
   return (
     <div className="absolute top-0 flex min-h-screen w-screen flex-col items-start justify-center gap-4 bg-gradient-to-r from-black px-20 text-white">
-      <div className="mt-32 text-4xl font-semibold">{title}</div>
+      <div className="mt-16 text-4xl font-semibold">{title}</div>
       <p className="w-1/2 text-xl">
         {overview.length > 200 ? overview.substr(0, 300) + "..." : overview}
       </p>
