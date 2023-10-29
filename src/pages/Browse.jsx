@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import Header from "../components/Header";
 import {
@@ -9,18 +10,27 @@ import {
 } from "../hooks/useMovies";
 import NowPlaying from "../components/NowPlaying";
 import MoviesContainer from "../components/MoviesContainer";
+import GptSearch from "./GptSearch";
 
 const Browse = () => {
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
+
   useNowPlayingMovies();
   usePopularMovies();
   useTopRatedMovies();
   useUpcomingMovies();
 
   return (
-    <div>
+    <div className="bg-black">
       <Header />
-      <NowPlaying />
-      <MoviesContainer />
+      {showGptSearch ? (
+        <GptSearch />
+      ) : (
+        <>
+          <NowPlaying />
+          <MoviesContainer />
+        </>
+      )}
     </div>
   );
 };
